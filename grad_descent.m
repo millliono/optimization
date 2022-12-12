@@ -14,9 +14,12 @@ alpha = 0.0001;
 e = 0.1e-4;
 
 % Perform gradient descent
-while dfdx(x,y) > e && dfdy(x,y) > e
-    x = x - alpha * dfdx(x,y);
-    y = y - alpha * dfdy(x,y);
+n_grad = norm([dfdx(x,y), dfdy(x,y)]);
+while n_grad > e
+    grad = [dfdx(x,y), dfdy(x,y)];
+    n_grad = norm(grad);
+    x = x - alpha * grad(1);
+    y = y - alpha * grad(2);
 end
 
 xmin = x;
