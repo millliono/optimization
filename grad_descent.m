@@ -33,6 +33,27 @@ elseif strcmp(method, "line_min")
     end
 
 elseif strcmp(method, "armijo")
+    s = 10;
+    b = 0.9;
+    sigma = 0.9;
+
+    n_grad = norm([dfdx(x,y), dfdy(x,y)]);
+    while n_grad > e
+        grad = [dfdx(x,y), dfdy(x,y)];
+        n_grad = norm(grad);
+        
+        m = 0;
+%         retx = x + b^m * s * grad(1);
+%         rety = y + b^m * s * grad(2);
+        while f(x,y) >  f(x + b^m * s * grad(1), y + b^m * s * grad(2))... 
+            -  (sigma *  b^m * s * dot([dfdx(x,y), dfdy(x,y)], [grad(1), grad(2)]'))
+            m = m + 1;
+        end
+
+        alpha = b^m * s;
+        x = x - alpha * grad(1);
+        y = y - alpha * grad(2);
+    end
  
 end
 
